@@ -28,7 +28,15 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddScoped<IAlunoService, AlunoService>();
 builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
 
-builder.Services.AddCors();//Adição do serviço CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3001") // coloque a porta do seu front-end
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
